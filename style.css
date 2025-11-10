@@ -42,3 +42,21 @@ h2 {
 .career {
   color: #00FFCC;
 }
+
+.login {
+  width: 320px;
+  background: rgba(255, 255, 255, 0.05); /* transparent glass look */
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  margin: 30px auto;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.login:hover {
+  box-shadow: 0 0 40px #E50914; /* Netflix red glow */
+  transform: scale(1.03);
+}
