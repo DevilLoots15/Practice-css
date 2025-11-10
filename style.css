@@ -12,3 +12,9 @@ body {
   font-size: 12px;
   letter-spacing: 1px;
 }
+
+card {
+  display: block;
+  margin: 15px;
+  padding: 10px 20px
+}
