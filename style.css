@@ -1,61 +1,11 @@
 body {
-  background: linear-gradient(135deg, #0a0a23, #1b1b4d);
-  color: #e0e0ff;
+  background-color: darkblue;
   text-align: center;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-h2 {
-  margin-top: 30px;
-  color: #ffffff;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px rgba(255,255,255,0.3);
 }
 
 .card {
-  width: 220px;
   display: block;
-  margin: 30px auto;
-  border-radius: 15px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(0, 100, 255, 0.6);
-}
-
-p {
-  background: rgba(255,255,255,0.08);
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 10px;
-  backdrop-filter: blur(5px);
-}
-
-button {
-  background: linear-gradient(135deg, #0055ff, #00d9ff);
-  color: white;
-  font-weight: bold;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
-}
-
-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.6);
-}
-
-footer {
-  margin-top: 40px;
-  font-size: 12px;
-  color: #aaa;
-  letter-spacing: 1px;
+  margin: 20px auto;
+  padding: 8px 16px;
+  border-radius: 3px;
 }
