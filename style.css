@@ -10,3 +10,14 @@ body {
   padding: 8px 16px;
   border-radius: 3px;
 }
+
+button {
+  background: navy;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  display: inline-block;
+  margin: 10px auto;
+  padding: 3px 8px;
+  border-radius: 2px;
+}
