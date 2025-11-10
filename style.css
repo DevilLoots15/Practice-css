@@ -5,8 +5,8 @@ body {
 
 .card {
   display: block;
-  width: 200px;
-  margin: 20px auto;
+  width: 280px;
+  margin: 15px auto;
   padding: 8px 16px;
   border-radius: 3px;
 }
