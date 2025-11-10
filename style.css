@@ -16,6 +16,9 @@ button {
   color: white;
   font-weight: bold;
   font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
   display: inline-block;
   margin: 15px auto;
   padding: 8px 16px;
