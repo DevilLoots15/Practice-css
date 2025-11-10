@@ -26,6 +26,11 @@ button {
   letter-spacing: 1px;
 }
 
+button:hover {
+  background-color: #0056D2;
+  box-shadow: 0 0 #007BFF;
+}
+    
 footer {
   color: #6C7A91;
 }
