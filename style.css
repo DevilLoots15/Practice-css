@@ -6,9 +6,9 @@ body {
 }
   
 .card {
-  width: 200px;
+  width: 250px;
   background: #1b263b;
-  box-radius: 10px;
+  box-radius: 20px;
   display: block;
   margin: 12px auto;
   padding: 6px 12px;
