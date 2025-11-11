@@ -8,8 +8,7 @@ body {
 .card {
   width: 250px;
   background: #1b263b;
-  box-radius: 50px;
   display: block;
   margin: 12px auto;
-  padding: 6px 100px;
+  padding: 6px 20px;
 }
