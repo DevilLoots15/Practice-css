@@ -6,7 +6,7 @@ body {
 }
   
 .card {
-  width: 10px;
+  width: 200px;
   background: #1b263b;
   box-radius: 10px;
   display: block;
