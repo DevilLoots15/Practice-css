@@ -12,3 +12,8 @@ body {
   margin: 15px auto;
   padding: 12px 17px;
 }
+
+h2 {
+  color: #e0e1dd;
+  fonts-weight: bold;
+}
