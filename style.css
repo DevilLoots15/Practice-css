@@ -1,17 +1,17 @@
 body {
   background: #0d1b2a;
-  font-family: Arial,sans-serif;
+  font-family: Arial, sans-serif;
   color: white;
   text-align: center;
 }
-  
+
 .card {
   width: 250px;
   background: #1b263b;
   display: block;
   margin: 17px auto;
   padding: 14px 17px;
-  border-radius: 20px
+  border-radius: 20px;
 }
 
 h2 {
@@ -37,9 +37,26 @@ button {
   font-weight: bold;
   letter-spacing: 1px;
   font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
   transition: background 0.3s ease;
+  
+  /* 🌟 Animation added */
+  animation: glow 2s infinite alternate;
 }
 
+/* Hover effect stays */
 button:hover {
   background-color: #0096c7;
+}
+
+/* 🔥 Easy animation definition */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #00b4d8;
+  }
+  to {
+    box-shadow: 0 0 20px #00b4d8;
+  }
 }
