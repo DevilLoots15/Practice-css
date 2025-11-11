@@ -15,5 +15,9 @@ body {
 
 h2 {
   color: #e0e1dd;
-  fonts-weight: bold;
+}
+
+p {
+  color: #a9bcd0;
+  font-weight: bold;
 }
