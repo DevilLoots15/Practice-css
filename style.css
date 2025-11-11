@@ -5,3 +5,11 @@ body {
   text-align: center;
 }
   
+.card {
+  width: 200px;
+  background: #1b263b;
+  box-radius: 10px;
+  display: block;
+  margin: 12px auto;
+  padding: 6px 12px;
+}
