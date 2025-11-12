@@ -13,6 +13,16 @@ body {
   padding: 6px 9px;
   border-radius: 50%;
   border-shadow: 3px;
+  animation: glow 0.3s ease infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #1b263b, 0 0 10px #1b263b;
+  }
+  to {
+    box-shadow: 0 0 15px #00BFFF, 0 0 20px #00BFFF;
+  }
 }
 
 h2 {
