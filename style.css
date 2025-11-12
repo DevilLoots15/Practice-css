@@ -11,7 +11,7 @@ body {
   display: block;
   margin: 17px auto;
   padding: 14px 17px;
-  border-radius: 20px;
+  border-radius: 50%;
 }
 
 h2 {
