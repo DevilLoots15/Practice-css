@@ -7,13 +7,13 @@ body {
 
 .items {
   flex-direction: column;
-  gap: 15px;
-  width: 200px;
+  gap: 10px;
+  width: 220px;
   background: #1b263b;
   display: flex;
   margin: 17px auto;
-  padding: 30px;
-  border-radius: 250px;
+  padding: 40px;
+  border-radius: 220px;
   box-shadow: 0 0 10px #1b263b;
   animation: Cardglow 1s ease infinite alternate;
 }
