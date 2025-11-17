@@ -13,7 +13,7 @@ body {
   display: flex;
   margin: 17px auto;
   padding: 10px;
-  border-radius: 150px;
+  border-radius: 200px;
   box-shadow: 0 0 10px #1b263b;
   animation: Cardglow 1s ease infinite alternate;
 }
