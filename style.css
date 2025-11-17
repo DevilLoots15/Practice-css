@@ -12,11 +12,11 @@ body {
   margin: 17px auto;
   padding: 6px 9px;
   border-radius: 50%;
-  border-shadow: 3px;
+  box-shadow: 3px;
   animation: glow 1s ease infinite alternate;
 }
 
-@keyframes glow {
+@keyframes Cardglow {
   from {
     box-shadow: 0 0 5px #1b263b;
   }
@@ -63,7 +63,7 @@ button:hover {
 }
 
 /* 🔥 Easy animation definition */
-@keyframes glow {
+@keyframes Buttonglow {
   from {
     box-shadow: 0 0 5px #00b4d8;
   }
