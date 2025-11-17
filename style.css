@@ -7,7 +7,7 @@ body {
 
 .items {
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 250px;
   background: #1b263b;
   display: flex;
@@ -21,10 +21,10 @@ body {
 /* 🌟 Card Glow */
 @keyframes Cardglow {
   from {
-    box-shadow: 0 0 10px #1b263b;
+    box-shadow: 0 0 5px #1b263b;
   }
   to {
-    box-shadow: 0 0 30px #ff0000;
+    box-shadow: 0 0 20px #ff0000;
   }
 }
 
