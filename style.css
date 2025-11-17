@@ -10,12 +10,13 @@ body {
   background: #1b263b;
   display: block;
   margin: 17px auto;
-  padding: 6px 9px;
+  padding: 20px;
   border-radius: 50%;
-  box-shadow: 3px;
+  box-shadow: 0 0 10px #1b263b;
   animation: Cardglow 1s ease infinite alternate;
 }
 
+/* 🌟 Card Glow */
 @keyframes Cardglow {
   from {
     box-shadow: 0 0 5px #1b263b;
@@ -39,6 +40,7 @@ p {
   margin: 5px auto;
 }
 
+/* 🔥 Neon Button */
 button {
   background-color: #00b4d8;
   color: #ffffff;
@@ -52,17 +54,16 @@ button {
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s ease;
-  
-  /* 🌟 Animation added */
+  box-shadow: 0 0 10px #00b4d8;
   animation: Buttonglow 1s ease infinite alternate;
 }
 
-/* Hover effect stays */
+/* Hover effect */
 button:hover {
   background-color: #0096c7;
 }
 
-/* 🔥 Easy animation definition */
+/* ✨ Button Glow Animation */
 @keyframes Buttonglow {
   from {
     box-shadow: 0 0 5px #00b4d8;
