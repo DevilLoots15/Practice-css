@@ -7,7 +7,7 @@ body {
 
 .items {
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   width: 250px;
   background: #1b263b;
   display: flex;
