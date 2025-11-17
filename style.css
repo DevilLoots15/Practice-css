@@ -15,7 +15,7 @@ body {
 .items {
   flex-direction: column;
   gap: 10px;
-  width: 220px;
+  width: 200px;
   background: #1b263b;
   display: flex;
   margin: 17px auto;
