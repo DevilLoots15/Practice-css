@@ -13,7 +13,7 @@ body {
   padding: 6px 9px;
   border-radius: 50%;
   box-shadow: 3px;
-  animation: glow 1s ease infinite alternate;
+  animation: Cardglow 1s ease infinite alternate;
 }
 
 @keyframes Cardglow {
