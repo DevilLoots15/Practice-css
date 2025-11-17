@@ -54,7 +54,7 @@ button {
   transition: background 0.3s ease;
   
   /* 🌟 Animation added */
-  animation: glow 2s infinite alternate;
+  animation: Buttonglow 1s ease infinite alternate;
 }
 
 /* Hover effect stays */
