@@ -12,7 +12,7 @@ body {
   background: #1b263b;
   display: flex;
   margin: 17px auto;
-  padding: 5px;
+  padding: 10px;
   border-radius: 50%;
   box-shadow: 0 0 10px #1b263b;
   animation: Cardglow 1s ease infinite alternate;
