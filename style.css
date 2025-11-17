@@ -5,10 +5,12 @@ body {
   text-align: center;
 }
 
-.card {
+.items {
+  flex-direction: column;
+  gap: 10px;
   width: 250px;
   background: #1b263b;
-  display: block;
+  display: flex;
   margin: 17px auto;
   padding: 5px;
   border-radius: 50%;
