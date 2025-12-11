@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aviator - Pro Real</title>
+    <title>Aviator Pro - Real Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #000000;
+            --bg-body: #0a0a0a;
+            --bg-stage: #101112;
             --bg-panel: #1b1c1d;
-            --bg-input: #0f0f0f;
             --accent-red: #E91E63;
             --accent-green: #28a745;
             --accent-orange: #ff9800;
             --text-white: #ffffff;
-            --text-grey: #9ca0a9;
-            --border: #2c2d30;
+            --text-muted: #9ca0a9;
+            --border-color: #2c2d30;
+            --btn-shadow: 0 3px 0 rgba(0,0,0,0.3);
         }
 
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -33,301 +34,260 @@
 
         /* --- Header --- */
         .header {
-            height: 54px;
-            background: #1b1c1d;
+            height: 50px;
+            background: var(--bg-panel);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
             z-index: 20;
         }
-        .logo { font-weight: 900; font-size: 20px; font-style: italic; letter-spacing: -1px; display:flex; align-items:center; gap:5px; }
+        .logo { font-weight: 900; font-size: 22px; font-style: italic; letter-spacing: -1px; color: #fff; display: flex; align-items: center; gap: 6px; }
         .logo span { color: var(--accent-red); }
-        .balance-box { display: flex; flex-direction: column; align-items: flex-end; }
-        .balance-val { color: var(--accent-green); font-weight: 700; font-size: 16px; }
-        .balance-label { font-size: 10px; color: var(--text-grey); }
+        
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .balance-box { text-align: right; line-height: 1.2; }
+        .balance-val { color: var(--accent-green); font-weight: 700; font-size: 16px; display: block; }
+        .currency { font-size: 10px; color: var(--text-muted); }
 
-        .sound-toggle {
-            background: none; border: 1px solid #333; color: #666;
-            width: 30px; height: 30px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; margin-right: 10px;
+        .btn-sound {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--border-color);
+            color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;
         }
-        .sound-toggle.active { color: var(--accent-green); border-color: var(--accent-green); }
+        .btn-sound.active { color: var(--accent-green); border-color: var(--accent-green); background: rgba(40, 167, 69, 0.1); }
 
         /* --- History Bar --- */
         .history-bar {
-            height: 34px;
+            height: 30px;
             background: #141516;
             display: flex;
             align-items: center;
             padding: 0 10px;
             gap: 6px;
-            overflow: hidden;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #000;
             flex-shrink: 0;
+            overflow: hidden;
         }
-        .history-pill {
-            background: #202124;
-            color: #888;
-            padding: 1px 8px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 700;
-            min-width: 36px;
-            text-align: center;
+        .hist-pill {
+            background: #202124; color: #999; padding: 2px 8px; border-radius: 10px;
+            font-size: 10px; font-weight: 700; min-width: 35px; text-align: center; border: 1px solid transparent;
         }
-        .history-pill.blue { color: #34b4ff; background: rgba(52,180,255,0.1); }
-        .history-pill.purple { color: #c017b4; background: rgba(192,23,180,0.1); }
+        .hist-pill.p-blue { color: #34b4ff; background: rgba(52,180,255,0.1); border-color: rgba(52,180,255,0.15); }
+        .hist-pill.p-purple { color: #c017b4; background: rgba(192,23,180,0.1); border-color: rgba(192,23,180,0.15); }
+        .hist-pill.p-pink { color: var(--accent-red); background: rgba(233,30,99,0.1); }
 
-        /* --- Main Layout --- */
-        .main-layout {
+        /* --- Main Content Area --- */
+        .main-wrapper {
             display: flex;
             flex-direction: column;
             flex: 1;
-            height: 100%;
+            height: calc(100vh - 80px); /* Subtract header/history */
             overflow: hidden;
         }
 
-        /* --- Stage (Canvas) --- */
-        .stage-container {
-            flex: 1; /* Takes remaining space on mobile */
+        /* --- Game Canvas Area --- */
+        .game-stage {
+            flex: 1; /* Takes available space */
             position: relative;
-            background: #0f0f0f;
+            background: var(--bg-stage);
             overflow: hidden;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid var(--border);
         }
         
         canvas { width: 100%; height: 100%; display: block; }
 
-        .multiplier-display {
-            position: absolute;
-            top: 45%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 64px; font-weight: 900; color: white;
-            z-index: 5; font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+        /* Overlays */
+        .center-overlay {
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; pointer-events: none; z-index: 10;
         }
-
-        .flew-away-badge {
-            position: absolute; top: 40%; left: 50%;
-            transform: translate(-50%, -50%);
+        .big-mult {
+            font-size: 70px; font-weight: 900; color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5); font-variant-numeric: tabular-nums;
+        }
+        
+        .crash-msg {
             display: none; flex-direction: column; align-items: center;
-            z-index: 10;
         }
-        .flew-away-text {
-            font-size: 22px; font-weight: 700; color: var(--accent-red);
-            text-transform: uppercase; margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-        }
-        .flew-away-val { font-size: 58px; font-weight: 900; color: var(--accent-red); }
+        .crash-title { font-size: 24px; font-weight: 700; color: var(--accent-red); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .crash-val { font-size: 60px; font-weight: 900; color: var(--accent-red); }
 
         .loader {
             position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            display: none; flex-direction: column; align-items: center; gap: 8px;
+            display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 10;
         }
-        .loader-bar-bg { width: 120px; height: 4px; background: #222; border-radius: 2px; overflow:hidden; }
-        .loader-bar-fill { height:100%; background: var(--accent-red); width:0%; transition: width 0.05s linear; }
+        .loader-spinner {
+            width: 40px; height: 40px; border: 4px solid #333; border-top: 4px solid var(--accent-red);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        .loader-text { font-size: 12px; color: #888; font-weight: 500; letter-spacing: 1px; margin-top: 5px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- Betting Section (Dual) --- */
-        .betting-section {
+        /* --- Betting Controls (Compact Mobile) --- */
+        .controls-area {
             background: #141516;
-            padding: 8px;
+            padding: 8px 10px;
             display: flex;
-            flex-direction: column; /* Mobile Default */
+            flex-direction: column;
             gap: 8px;
+            flex-shrink: 0;
+            /* Ensure it fits on screen without scrolling if possible */
+            max-height: 45vh; 
             overflow-y: auto;
-            max-height: 50%; /* Don't take up too much screen on mobile */
         }
 
-        /* The Panel */
         .bet-panel {
             background: var(--bg-panel);
             border-radius: 8px;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            flex: 1;
-            min-height: 120px;
+            gap: 6px;
         }
-        .bet-panel.disabled { opacity: 0.6; pointer-events: none; }
 
-        /* Top row of panel */
-        .panel-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
-        .switch-tabs { background: #000; padding: 2px; border-radius: 12px; display: flex; }
-        .tab { padding: 3px 12px; font-size: 10px; border-radius: 10px; color: #777; font-weight: 700; cursor: pointer; }
+        .panel-top { display: flex; justify-content: space-between; align-items: center; height: 24px; }
+        .tabs { background: #000; border-radius: 12px; padding: 2px; display: flex; }
+        .tab { padding: 2px 10px; font-size: 10px; color: #777; border-radius: 10px; cursor: pointer; font-weight: 700; }
         .tab.active { background: #333; color: #fff; }
-
-        /* Controls Row */
-        .controls-row {
-            display: grid;
-            grid-template-columns: 1fr 110px; /* Input area vs Button */
-            gap: 8px;
-            height: 100%;
-        }
-
-        /* Input Area */
-        .input-area { display: flex; flex-direction: column; justify-content: space-between; }
-        .counter-input {
-            display: flex; background: #000; border: 1px solid #333;
-            border-radius: 4px; height: 34px; align-items: center; padding: 0 4px;
-        }
-        .btn-inc {
-            width: 24px; height: 100%; background: transparent; border: none;
-            color: #aaa; font-size: 16px; cursor: pointer;
-        }
-        .input-val {
-            flex: 1; background: transparent; border: none; color: #fff;
-            text-align: center; font-weight: 700; font-size: 14px; outline: none;
-        }
         
-        .presets { display: flex; gap: 4px; margin-top: 5px; }
-        .preset-btn {
-            flex: 1; background: #2c2d30; border: none; color: #fff;
-            border-radius: 3px; font-size: 9px; padding: 4px 0; cursor: pointer;
-        }
+        .control-row { display: grid; grid-template-columns: 1fr 120px; gap: 10px; align-items: stretch; height: 50px; }
 
-        /* Big Button */
-        .main-btn {
-            width: 100%; height: 100%; border-radius: 6px; border: none; cursor: pointer;
+        .input-box { display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        
+        .counter {
+            display: flex; background: #000; border: 1px solid #333; border-radius: 6px;
+            height: 28px; align-items: center; padding: 0 4px;
+        }
+        .btn-pm { width: 24px; height: 100%; background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; }
+        .inp-val { flex: 1; background: none; border: none; color: #fff; text-align: center; font-weight: 700; font-size: 14px; outline: none; }
+        
+        .presets { display: flex; gap: 4px; margin-top: 2px; }
+        .btn-pre { flex: 1; background: #2c2d30; border: none; border-radius: 4px; color: #fff; font-size: 9px; padding: 3px 0; cursor: pointer; }
+
+        /* Big Action Button */
+        .btn-action {
+            width: 100%; height: 100%; border: none; border-radius: 8px; cursor: pointer;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.3); position: relative;
-            transition: transform 0.1s;
+            position: relative; box-shadow: var(--btn-shadow); transition: transform 0.05s;
         }
-        .main-btn:active { transform: translateY(2px); box-shadow: none; }
+        .btn-action:active { transform: translateY(2px); box-shadow: none; }
         
-        .btn-green { background: var(--accent-green); }
-        .btn-orange { background: var(--accent-orange); border: 1px solid rgba(255,255,255,0.2); }
-        .btn-red { background: #d32f2f; }
+        .bg-green { background: var(--accent-green); }
+        .bg-orange { background: var(--accent-orange); border: 1px solid rgba(255,255,255,0.3); }
+        .bg-red { background: #d32f2f; } /* Waiting/Cancel */
 
-        .btn-lbl { font-size: 15px; font-weight: 700; color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,0.4); }
-        .btn-sub { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.9); margin-top: 2px; }
+        .lbl-lg { font-size: 16px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); line-height: 1; }
+        .lbl-sm { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.9); margin-top: 2px; text-transform: uppercase; }
 
-        /* --- Desktop Responsive --- */
-        @media (min-width: 900px) {
-            .main-layout {
-                flex-direction: row; /* Side by side stage and controls */
-                padding: 20px;
-                gap: 20px;
-                background: #000;
+        /* --- Desktop Layout --- */
+        @media (min-width: 768px) {
+            .main-wrapper { flex-direction: row; padding: 20px; gap: 20px; background: #000; height: calc(100vh - 50px); }
+            .game-stage { border-radius: 12px; border: 1px solid var(--border-color); }
+            .controls-area {
+                width: 360px; background: transparent; padding: 0; overflow: visible; gap: 15px; border: none;
             }
-            .stage-container {
-                border-radius: 12px;
-                border: 1px solid var(--border);
-            }
-            .betting-section {
-                width: 380px;
-                flex-shrink: 0;
-                background: transparent;
-                border: none;
-                padding: 0;
-                overflow: visible;
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-            }
-            .bet-panel {
-                height: 140px;
-            }
+            .bet-panel { height: 140px; padding: 12px; }
+            .control-row { height: 60px; }
+            .counter { height: 36px; }
+            .lbl-lg { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">
-            <div style="color:#E91E63; font-size: 24px;">✈</div> 
-            Aviator
-        </div>
-        <div style="display:flex; align-items:center;">
-            <button class="sound-toggle" id="soundBtn">♪</button>
+        <div class="logo">Aviator <span>PRO</span></div>
+        <div class="header-right">
+            <button class="btn-sound" id="btnSound">🔇</button>
             <div class="balance-box">
-                <span class="balance-val" id="totalBalance">5000.00</span>
-                <span class="balance-label">INR</span>
+                <span class="balance-val" id="uiBalance">10,000.00</span>
+                <span class="currency">INR</span>
             </div>
         </div>
     </div>
 
     <div class="history-bar" id="historyBar">
-        <div style="color:#555; font-size:12px; cursor:pointer">🕒</div>
+        <div style="padding:0 8px; color:#555; cursor:pointer">🕒</div>
         </div>
 
-    <div class="main-layout">
+    <div class="main-wrapper">
         
-        <div class="stage-container">
-            <canvas id="gameCanvas"></canvas>
+        <div class="game-stage">
+            <canvas id="canvas"></canvas>
             
-            <div class="multiplier-display" id="bigMult">1.00x</div>
-            
-            <div class="flew-away-badge" id="crashBadge">
-                <div class="flew-away-text">FLEW AWAY!</div>
-                <div class="flew-away-val" id="crashVal">1.00x</div>
+            <div class="center-overlay">
+                <div class="big-mult" id="elMult">1.00x</div>
+                <div class="crash-msg" id="elCrash">
+                    <div class="crash-title">FLEW AWAY!</div>
+                    <div class="crash-val" id="elCrashVal">1.00x</div>
+                </div>
             </div>
 
-            <div class="loader" id="loader">
-                <div style="font-size: 11px; color: #888; letter-spacing: 1px;">WAITING FOR ROUND</div>
-                <div class="loader-bar-bg"><div class="loader-bar-fill" id="loaderFill"></div></div>
+            <div class="loader" id="elLoader">
+                <div class="loader-spinner"></div>
+                <div class="loader-text">WAITING FOR NEXT ROUND</div>
             </div>
         </div>
 
-        <div class="betting-section">
+        <div class="controls-area">
             
-            <div class="bet-panel" id="panel1">
-                <div class="panel-header">
-                    <div class="switch-tabs">
+            <div class="bet-panel">
+                <div class="panel-top">
+                    <div class="tabs">
                         <div class="tab active">Bet</div>
                         <div class="tab">Auto</div>
                     </div>
                 </div>
-                <div class="controls-row">
-                    <div class="input-area">
-                        <div class="counter-input">
-                            <button class="btn-inc" onclick="game.adjBet(1, -10)">-</button>
-                            <input type="number" id="betInput1" class="input-val" value="10">
-                            <button class="btn-inc" onclick="game.adjBet(1, 10)">+</button>
+                <div class="control-row">
+                    <div class="input-box">
+                        <div class="counter">
+                            <button class="btn-pm" onclick="game.adjustBet(1, -10)">-</button>
+                            <input type="number" id="inpBet1" class="inp-val" value="10">
+                            <button class="btn-pm" onclick="game.adjustBet(1, 10)">+</button>
                         </div>
                         <div class="presets">
-                            <button class="preset-btn" onclick="game.setBet(1, 100)">100</button>
-                            <button class="preset-btn" onclick="game.setBet(1, 200)">200</button>
-                            <button class="preset-btn" onclick="game.setBet(1, 500)">500</button>
-                            <button class="preset-btn" onclick="game.setBet(1, 1000)">1k</button>
+                            <button class="btn-pre" onclick="game.setBet(1, 100)">100</button>
+                            <button class="btn-pre" onclick="game.setBet(1, 500)">500</button>
+                            <button class="btn-pre" onclick="game.setBet(1, 1000)">1k</button>
                         </div>
                     </div>
-                    <button class="main-btn btn-green" id="btn1" onclick="game.handleBtn(1)">
-                        <div class="btn-lbl">BET</div>
+                    <button class="btn-action bg-green" id="btnBet1" onclick="game.clickBtn(1)">
+                        <div class="lbl-lg">BET</div>
+                        <div class="lbl-sm">10.00 INR</div>
                     </button>
                 </div>
             </div>
 
-            <div class="bet-panel" id="panel2">
-                <div class="panel-header">
-                    <div class="switch-tabs">
+            <div class="bet-panel">
+                <div class="panel-top">
+                    <div class="tabs">
                         <div class="tab active">Bet</div>
                         <div class="tab">Auto</div>
                     </div>
                 </div>
-                <div class="controls-row">
-                    <div class="input-area">
-                        <div class="counter-input">
-                            <button class="btn-inc" onclick="game.adjBet(2, -10)">-</button>
-                            <input type="number" id="betInput2" class="input-val" value="50">
-                            <button class="btn-inc" onclick="game.adjBet(2, 10)">+</button>
+                <div class="control-row">
+                    <div class="input-box">
+                        <div class="counter">
+                            <button class="btn-pm" onclick="game.adjustBet(2, -10)">-</button>
+                            <input type="number" id="inpBet2" class="inp-val" value="50">
+                            <button class="btn-pm" onclick="game.adjustBet(2, 10)">+</button>
                         </div>
                         <div class="presets">
-                            <button class="preset-btn" onclick="game.setBet(2, 100)">100</button>
-                            <button class="preset-btn" onclick="game.setBet(2, 200)">200</button>
-                            <button class="preset-btn" onclick="game.setBet(2, 500)">500</button>
-                            <button class="preset-btn" onclick="game.setBet(2, 1000)">1k</button>
+                            <button class="btn-pre" onclick="game.setBet(2, 100)">100</button>
+                            <button class="btn-pre" onclick="game.setBet(2, 500)">500</button>
+                            <button class="btn-pre" onclick="game.setBet(2, 1000)">1k</button>
                         </div>
                     </div>
-                    <button class="main-btn btn-green" id="btn2" onclick="game.handleBtn(2)">
-                        <div class="btn-lbl">BET</div>
+                    <button class="btn-action bg-green" id="btnBet2" onclick="game.clickBtn(2)">
+                        <div class="lbl-lg">BET</div>
+                        <div class="lbl-sm">50.00 INR</div>
                     </button>
                 </div>
             </div>
@@ -336,328 +296,359 @@
     </div>
 
     <script>
-        // --- Sound Engine (Web Audio API) ---
-        class SoundManager {
-            constructor() {
-                this.ctx = null;
-                this.enabled = false;
-                this.engineOsc = null;
-                this.engineGain = null;
-            }
+        // --- PRO AUDIO ENGINE (Web Audio API) ---
+        const AudioEngine = {
+            ctx: null,
+            bgOsc: null,
+            bgGain: null,
+            engineOsc: null,
+            engineGain: null,
+            isEnabled: false,
 
             init() {
-                if(!this.ctx) {
+                if (!this.ctx) {
                     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                if(this.ctx.state === 'suspended') {
+                if (this.ctx.state === 'suspended') {
                     this.ctx.resume();
                 }
-                this.enabled = true;
-            }
+                this.isEnabled = true;
+                // Start background rumble immediately
+                this.startAmbience();
+            },
 
             toggle() {
-                if(this.enabled) {
-                    this.stopEngine();
-                    this.enabled = false;
+                if (this.isEnabled) {
+                    this.stopAll();
+                    this.isEnabled = false;
                     return false;
                 } else {
                     this.init();
                     return true;
                 }
-            }
+            },
 
-            // Engine Drone
-            startEngine() {
-                if(!this.enabled) return;
+            stopAll() {
+                if(this.bgOsc) { this.bgOsc.stop(); this.bgOsc = null; }
                 this.stopEngine();
+            },
+
+            // Low frequency background rumble
+            startAmbience() {
+                if(!this.isEnabled) return;
+                this.bgOsc = this.ctx.createOscillator();
+                this.bgGain = this.ctx.createGain();
                 
+                this.bgOsc.frequency.value = 50; // Low rumble
+                this.bgGain.gain.value = 0.05; // Very quiet
+
+                this.bgOsc.connect(this.bgGain);
+                this.bgGain.connect(this.ctx.destination);
+                this.bgOsc.start();
+            },
+
+            // The Rising Plane Sound
+            startEngine() {
+                if(!this.isEnabled) return;
+                this.stopEngine();
+
                 this.engineOsc = this.ctx.createOscillator();
                 this.engineOsc.type = 'sawtooth';
-                this.engineOsc.frequency.value = 80; // Start low pitch
+                this.engineOsc.frequency.value = 100; // Start pitch
 
-                this.engineGain = this.ctx.createGain();
-                this.engineGain.gain.value = 0.05; // Low volume
-
-                // Lowpass filter to muffle it
+                // Lowpass filter to make it sound like an engine, not a video game beep
                 const filter = this.ctx.createBiquadFilter();
                 filter.type = 'lowpass';
-                filter.frequency.value = 400;
+                filter.frequency.value = 300;
+
+                this.engineGain = this.ctx.createGain();
+                this.engineGain.gain.value = 0.1;
 
                 this.engineOsc.connect(filter);
                 filter.connect(this.engineGain);
                 this.engineGain.connect(this.ctx.destination);
                 
                 this.engineOsc.start();
-            }
+                this.filter = filter; // Save ref to modulate later
+            },
 
             updateEngine(mult) {
-                if(!this.enabled || !this.engineOsc) return;
+                if(!this.engineOsc || !this.isEnabled) return;
                 // Pitch rises with multiplier
-                const pitch = 80 + (mult * 20); 
-                this.engineOsc.frequency.setTargetAtTime(Math.min(pitch, 600), this.ctx.currentTime, 0.1);
-            }
+                // Cap pitch at 600Hz so it doesn't hurt ears
+                const targetFreq = 100 + (mult * 40);
+                const safeFreq = Math.min(targetFreq, 800);
+                
+                this.engineOsc.frequency.setTargetAtTime(safeFreq, this.ctx.currentTime, 0.1);
+                // Open filter slightly as it goes faster
+                this.filter.frequency.setTargetAtTime(300 + (mult * 50), this.ctx.currentTime, 0.1);
+            },
 
             stopEngine() {
                 if(this.engineOsc) {
-                    this.engineOsc.stop();
-                    this.engineOsc.disconnect();
+                    const now = this.ctx.currentTime;
+                    this.engineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    this.engineOsc.stop(now + 0.5);
                     this.engineOsc = null;
                 }
-            }
+            },
 
-            // FX
-            playDing() {
-                if(!this.enabled) return;
+            playWin() {
+                if(!this.isEnabled) return;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(600, this.ctx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.3);
-            }
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, this.ctx.currentTime + 0.1);
+                g.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.5);
+            },
 
             playCrash() {
-                if(!this.enabled) return;
+                if(!this.isEnabled) return;
                 // White noise burst
-                const bufferSize = this.ctx.sampleRate * 0.5; // 0.5 sec
-                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for(let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const bufferSize = this.ctx.sampleRate * 0.5;
+                const b = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const d = b.getChannelData(0);
+                for(let i=0; i<bufferSize; i++) d[i] = Math.random() * 2 - 1;
 
-                const noise = this.ctx.createBufferSource();
-                noise.buffer = buffer;
-                const gain = this.ctx.createGain();
-                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
-                
-                noise.connect(gain);
-                gain.connect(this.ctx.destination);
-                noise.start();
+                const src = this.ctx.createBufferSource();
+                src.buffer = b;
+                const g = this.ctx.createGain();
+                g.gain.value = 0.2;
+                g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+                src.connect(g); g.connect(this.ctx.destination);
+                src.start();
             }
-        }
-        
-        const audio = new SoundManager();
+        };
 
-        // --- Game Engine ---
-        class AviatorGame {
+        // --- GAME LOGIC ---
+        class Aviator {
             constructor() {
-                this.canvas = document.getElementById('gameCanvas');
+                this.canvas = document.getElementById('canvas');
                 this.ctx = this.canvas.getContext('2d');
-                this.balance = 5000.00;
+                this.balance = 10000.00;
                 
                 // Betting State for 2 panels
                 this.bets = {
-                    1: { val: 10, placed: false, active: false, input: document.getElementById('betInput1'), btn: document.getElementById('btn1') },
-                    2: { val: 50, placed: false, active: false, input: document.getElementById('betInput2'), btn: document.getElementById('btn2') }
+                    1: { elInp: document.getElementById('inpBet1'), elBtn: document.getElementById('btnBet1'), val: 10, state: 'IDLE', queued: false, winAmt: 0 },
+                    2: { elInp: document.getElementById('inpBet2'), elBtn: document.getElementById('btnBet2'), val: 50, state: 'IDLE', queued: false, winAmt: 0 }
                 };
+                // State: IDLE -> BETTING (active in round) -> CASHED -> LOST
 
-                this.state = 'IDLE'; // IDLE, LOADING, FLYING, CRASHED
+                this.gameState = 'LOADING'; // LOADING, FLYING, CRASHED
                 this.mult = 1.00;
                 this.crashPoint = 1.00;
                 this.startTime = 0;
                 this.stars = [];
-                
-                // Asset: Plane SVG Base64
-                this.planeImg = new Image();
-                this.planeImg.src = `data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiNFOTFFNjMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIxIDE2djQtMmwtOC01VjdsOCA1em0tMTAgNHYtM2w0IDN2M3ptLTggNHYtMmwyLTF2M2wtMiAweiIvPjwvc3ZnPg==`;
 
-                this.resize();
-                window.addEventListener('resize', ()=>this.resize());
+                // Plane Asset
+                this.plane = new Image();
+                this.plane.src = `data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiNFOTFFNjMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIxIDE2djQtMmwtOC01VjdsOCA1em0tMTAgNHYtM2w0IDN2M3ptLTggNHYtMmwyLTF2M2wtMiAweiIvPjwvc3ZnPg==`;
+
                 this.initStars();
-                this.updateUI();
-
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                
                 // Start Loop
-                this.startLoading();
+                this.startLoadingPhase();
             }
 
             resize() {
-                const rect = this.canvas.parentElement.getBoundingClientRect();
-                this.canvas.width = rect.width;
-                this.canvas.height = rect.height;
-                this.width = rect.width;
-                this.height = rect.height;
+                const p = this.canvas.parentElement;
+                this.canvas.width = p.clientWidth;
+                this.canvas.height = p.clientHeight;
+                this.w = this.canvas.width;
+                this.h = this.canvas.height;
             }
 
             initStars() {
-                for(let i=0; i<60; i++) {
-                    this.stars.push({
-                        x: Math.random() * this.width,
-                        y: Math.random() * this.height,
-                        s: Math.random() * 2,
-                        v: 1 + Math.random() * 3
-                    });
-                }
+                for(let i=0; i<50; i++) this.stars.push({ x: Math.random()*2000, y: Math.random()*1000, s: Math.random()*2 });
             }
 
-            // -- Input Logic --
-            adjBet(id, delta) {
-                let v = Number(this.bets[id].input.value) + delta;
-                if(v < 1) v = 1;
-                this.bets[id].input.value = v;
-                this.updateBtn(id);
+            // -- Input Handling --
+            adjustBet(id, delta) {
+                const el = this.bets[id].elInp;
+                let v = parseInt(el.value) + delta;
+                if(v < 10) v = 10;
+                el.value = v;
+                this.renderBtn(id);
             }
             setBet(id, val) {
-                this.bets[id].input.value = val;
-                this.updateBtn(id);
+                this.bets[id].elInp.value = val;
+                this.renderBtn(id);
             }
 
-            handleBtn(id) {
+            clickBtn(id) {
+                // Initialize Audio on first user interaction
+                if(!AudioEngine.ctx) { 
+                    AudioEngine.init(); 
+                    document.getElementById('btnSound').innerText = '🔊';
+                    document.getElementById('btnSound').classList.add('active');
+                }
+
                 const bet = this.bets[id];
-                const amount = Number(bet.input.value);
+                const amt = parseInt(bet.elInp.value);
 
-                // Init audio on first interaction
-                if(!audio.ctx) audio.init();
-
-                if(this.state === 'FLYING') {
-                    if(bet.active) {
-                        // CASHOUT
-                        this.cashOut(id);
-                    } else if (!bet.placed) {
-                        // BET NEXT
-                        if(this.balance < amount) return;
-                        this.balance -= amount;
-                        bet.val = amount;
-                        bet.placed = true;
-                    } else {
-                        // CANCEL NEXT
-                        this.balance += bet.val;
-                        bet.placed = false;
+                if (this.gameState === 'LOADING') {
+                    // Phase: Preparing for round
+                    if (bet.state === 'IDLE') {
+                        if (this.balance < amt) return alert("Low Balance");
+                        this.balance -= amt;
+                        bet.val = amt;
+                        bet.state = 'BET_PLACED'; // Ready to fly
+                    } else if (bet.state === 'BET_PLACED') {
+                        // Cancel
+                        this.balance += amt;
+                        bet.state = 'IDLE';
                     }
-                } else {
-                    // IDLE/LOADING phase
-                    if(!bet.placed) {
-                        // BET
-                        if(this.balance < amount) return;
-                        this.balance -= amount;
-                        bet.val = amount;
-                        bet.placed = true;
-                    } else {
-                        // CANCEL
-                        this.balance += bet.val;
-                        bet.placed = false;
+                } 
+                else if (this.gameState === 'FLYING') {
+                    // Phase: Flying
+                    if (bet.state === 'ACTIVE') {
+                        // CASHOUT!
+                        const win = amt * this.mult;
+                        this.balance += win;
+                        bet.winAmt = win;
+                        bet.state = 'CASHED';
+                        AudioEngine.playWin();
+                    } else if (bet.state === 'IDLE') {
+                        // Bet for NEXT round
+                        if (this.balance < amt) return;
+                        this.balance -= amt;
+                        bet.val = amt;
+                        bet.queued = true;
+                    } else if (bet.queued) {
+                        // Cancel next round bet
+                        this.balance += amt;
+                        bet.queued = false;
                     }
                 }
+                
                 this.updateUI();
+                this.renderBtn(id);
             }
 
-            cashOut(id) {
+            // -- Visual Rendering of Buttons --
+            renderBtn(id) {
                 const bet = this.bets[id];
-                if(!bet.active) return;
+                const btn = bet.elBtn;
+                const amt = parseInt(bet.elInp.value);
+
+                // Reset Classes
+                btn.className = 'btn-action';
                 
-                const win = bet.val * this.mult;
-                this.balance += win;
-                bet.active = false;
-                bet.placed = false;
-                
-                audio.playDing();
-                
-                // Update Button to Show Win
-                const btn = bet.btn;
-                btn.className = 'main-btn btn-green';
-                btn.innerHTML = `<div class="btn-lbl">WON ${win.toFixed(2)}</div>`;
-                
-                // Revert button after delay
-                setTimeout(()=> this.updateBtn(id), 2000);
-                this.updateUI();
+                if (bet.state === 'CASHED') {
+                    // Show Win
+                    btn.classList.add('bg-green');
+                    btn.innerHTML = `<div class="lbl-lg">WON</div><div class="lbl-sm">${bet.winAmt.toFixed(2)}</div>`;
+                    return;
+                }
+
+                if (this.gameState === 'FLYING' && bet.state === 'ACTIVE') {
+                    // CASHOUT MODE
+                    btn.classList.add('bg-orange');
+                    const curWin = (amt * this.mult).toFixed(2);
+                    btn.innerHTML = `<div class="lbl-lg">CASH OUT</div><div class="lbl-sm">${curWin} INR</div>`;
+                } 
+                else if (bet.queued || (this.gameState === 'LOADING' && bet.state === 'BET_PLACED')) {
+                    // WAITING / CANCEL MODE
+                    btn.classList.add('bg-red');
+                    if(bet.queued) {
+                        btn.innerHTML = `<div class="lbl-lg">WAITING</div><div class="lbl-sm">NEXT ROUND</div>`;
+                    } else {
+                        btn.innerHTML = `<div class="lbl-lg">WAITING</div><div class="lbl-sm">CANCEL</div>`;
+                    }
+                } 
+                else {
+                    // DEFAULT BET MODE
+                    btn.classList.add('bg-green');
+                    btn.innerHTML = `<div class="lbl-lg">BET</div><div class="lbl-sm">${amt} INR</div>`;
+                }
             }
 
             updateUI() {
-                document.getElementById('totalBalance').textContent = this.balance.toFixed(2);
-                this.updateBtn(1);
-                this.updateBtn(2);
+                document.getElementById('uiBalance').innerText = this.balance.toFixed(2);
             }
 
-            updateBtn(id) {
-                const bet = this.bets[id];
-                const btn = bet.btn;
-                const amt = Number(bet.input.value);
+            // -- Game Loop Phases --
 
-                // If currently showing a "Win" message, skip update
-                if(btn.innerText.includes('WON')) return;
-
-                if(this.state === 'FLYING' && bet.active) {
-                    btn.className = 'main-btn btn-orange';
-                    const winAmt = (bet.val * this.mult).toFixed(2);
-                    btn.innerHTML = `<div class="btn-lbl">CASH OUT</div><div class="btn-sub">${winAmt}</div>`;
-                } else if (bet.placed) {
-                    btn.className = 'main-btn btn-red';
-                    if(this.state === 'FLYING') {
-                         btn.innerHTML = `<div class="btn-lbl">WAITING</div><div class="btn-sub">NEXT ROUND</div>`;
-                    } else {
-                        btn.innerHTML = `<div class="btn-lbl">WAITING</div><div class="btn-sub">CANCEL</div>`;
-                    }
-                } else {
-                    btn.className = 'main-btn btn-green';
-                    btn.innerHTML = `<div class="btn-lbl">BET</div><div class="btn-sub">${amt.toFixed(2)} INR</div>`;
-                }
-            }
-
-            // -- Game Loops --
-            startLoading() {
-                this.state = 'LOADING';
+            startLoadingPhase() {
+                this.gameState = 'LOADING';
                 this.mult = 1.00;
-                document.getElementById('bigMult').style.display = 'none';
-                document.getElementById('crashBadge').style.display = 'none';
-                document.getElementById('loader').style.display = 'flex';
                 
-                this.updateUI();
-                audio.stopEngine();
+                // UI Resets
+                document.getElementById('elLoader').style.display = 'flex';
+                document.getElementById('elMult').style.display = 'none';
+                document.getElementById('elCrash').style.display = 'none';
+                
+                AudioEngine.stopEngine();
 
-                let progress = 0;
+                // Process Queued Bets from previous round
+                [1,2].forEach(id => {
+                    if(this.bets[id].queued) {
+                        this.bets[id].queued = false;
+                        this.bets[id].state = 'BET_PLACED';
+                    }
+                    // Reset wins/losses display to "Bet"
+                    if(this.bets[id].state === 'CASHED' || this.bets[id].state === 'LOST') {
+                        this.bets[id].state = 'IDLE';
+                    }
+                    this.renderBtn(id);
+                });
+
+                // Loading Bar Animation (3 seconds)
+                let p = 0;
                 const int = setInterval(() => {
-                    progress += 2;
-                    document.getElementById('loaderFill').style.width = progress + '%';
-                    this.drawBackground(0.5); // Slow stars
-                    if(progress >= 100) {
+                    p++;
+                    this.drawScene(1); // Idle scene
+                    if(p > 60) {
                         clearInterval(int);
                         this.startFlight();
                     }
-                }, 50); // 2.5s load time
+                }, 50);
             }
 
             startFlight() {
-                this.state = 'FLYING';
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('bigMult').style.display = 'block';
-                
-                // Activate placed bets
+                this.gameState = 'FLYING';
+                document.getElementById('elLoader').style.display = 'none';
+                document.getElementById('elMult').style.display = 'block';
+
+                // Activate Placed Bets
                 [1,2].forEach(id => {
-                    if(this.bets[id].placed) {
-                        this.bets[id].active = true;
+                    if(this.bets[id].state === 'BET_PLACED') {
+                        this.bets[id].state = 'ACTIVE';
                     }
+                    this.renderBtn(id);
                 });
 
                 this.startTime = Date.now();
                 this.crashPoint = this.getCrashPoint();
-                audio.startEngine();
+                AudioEngine.startEngine();
                 
                 requestAnimationFrame(() => this.loop());
             }
 
             loop() {
-                if(this.state !== 'FLYING') return;
+                if(this.gameState !== 'FLYING') return;
 
-                const elapsed = Date.now() - this.startTime;
-                // E = time in seconds. Formula: M = 1 + (0.06 * t + 0.04 * t^2) approx
-                const t = elapsed / 1000;
-                this.mult = 1.0 + (0.06 * t) + (0.05 * t * t);
-                
+                const elapsed = (Date.now() - this.startTime) / 1000; // seconds
+                // Math: Exponential growth
+                this.mult = 1.0 + (0.06 * elapsed) + (0.04 * Math.pow(elapsed, 2));
+
                 // Update DOM
-                document.getElementById('bigMult').textContent = this.mult.toFixed(2) + 'x';
-                this.updateUI(); // Updates cashout buttons
-                audio.updateEngine(this.mult);
+                document.getElementById('elMult').innerText = this.mult.toFixed(2) + 'x';
+                AudioEngine.updateEngine(this.mult);
 
-                // Draw
-                this.drawBackground(this.mult);
-                this.drawCurve(this.mult);
+                // Update Buttons (Cashout value changes)
+                this.renderBtn(1);
+                this.renderBtn(2);
 
-                // Crash?
-                if(this.mult >= this.crashPoint) {
+                this.drawScene(this.mult);
+
+                if (this.mult >= this.crashPoint) {
                     this.crash();
                 } else {
                     requestAnimationFrame(() => this.loop());
@@ -665,147 +656,123 @@
             }
 
             crash() {
-                this.state = 'CRASHED';
-                audio.stopEngine();
-                audio.playCrash();
+                this.gameState = 'CRASHED';
+                AudioEngine.stopEngine();
+                AudioEngine.playCrash();
 
-                document.getElementById('bigMult').style.display = 'none';
-                document.getElementById('crashBadge').style.display = 'flex';
-                document.getElementById('crashVal').textContent = this.mult.toFixed(2) + 'x';
-                
-                this.addHistory(this.mult);
+                document.getElementById('elMult').style.display = 'none';
+                document.getElementById('elCrash').style.display = 'flex';
+                document.getElementById('elCrashVal').innerText = this.crashPoint.toFixed(2) + 'x';
 
-                // Clear active bets (Losses)
+                this.addHistory(this.crashPoint);
+
+                // Handle Losses
                 [1,2].forEach(id => {
-                    if(this.bets[id].active) {
-                        this.bets[id].active = false;
-                        this.bets[id].placed = false;
+                    if(this.bets[id].state === 'ACTIVE') {
+                        this.bets[id].state = 'LOST';
                     }
+                    // Important: Reset button view immediately so they know they lost
+                    this.renderBtn(id);
                 });
-                this.updateUI();
 
-                setTimeout(() => this.startLoading(), 3000);
+                // Restart after delay
+                setTimeout(() => this.startLoadingPhase(), 3000);
             }
 
+            // -- Logic --
             getCrashPoint() {
-                // Skewed distribution
+                // Fair-ish distribution
                 const r = Math.random();
-                // 1% chance of instant crash (1.00x)
-                if(r < 0.01) return 1.00;
-                // Inverse probability
+                if (r < 0.02) return 1.00; // Instant crash chance
                 const c = 0.99 / (1 - r);
-                return Math.max(1.00, Math.min(c, 500));
+                return Math.max(1.00, Math.min(c, 1000));
             }
 
             addHistory(val) {
                 const bar = document.getElementById('historyBar');
-                const el = document.createElement('div');
-                let color = '';
-                if(val >= 10) color = 'purple';
-                else if(val >= 2) color = 'blue';
-                el.className = `history-pill ${color}`;
-                el.textContent = val.toFixed(2) + 'x';
-                bar.insertBefore(el, bar.children[1]);
+                const pill = document.createElement('div');
+                pill.className = `hist-pill ${val >= 10 ? 'p-pink' : val >= 2 ? 'p-purple' : 'p-blue'}`;
+                pill.innerText = val.toFixed(2) + 'x';
+                bar.prepend(pill); // Add to start
                 if(bar.children.length > 20) bar.lastChild.remove();
             }
 
             // -- Drawing --
-            drawBackground(speed) {
-                this.ctx.fillStyle = '#0f0f0f';
-                this.ctx.fillRect(0, 0, this.width, this.height);
-                
-                // Draw Grid
-                this.ctx.strokeStyle = '#222';
-                this.ctx.lineWidth = 1;
-                this.ctx.beginPath();
-                for(let y=0; y<this.height; y+=60) {
-                    this.ctx.moveTo(0, y); this.ctx.lineTo(this.width, y);
-                }
-                for(let x=0; x<this.width; x+=60) {
-                    this.ctx.moveTo(x, 0); this.ctx.lineTo(x, this.height);
-                }
-                this.ctx.stroke();
+            drawScene(m) {
+                this.ctx.fillStyle = '#101112';
+                this.ctx.fillRect(0,0,this.w,this.h);
 
-                // Draw Stars
+                // Draw Stars (Moving)
                 this.ctx.fillStyle = '#666';
                 this.stars.forEach(s => {
                     this.ctx.beginPath();
                     this.ctx.arc(s.x, s.y, s.s, 0, Math.PI*2);
                     this.ctx.fill();
-                    s.x -= s.v * (speed > 1 ? speed * 0.5 : 0.5);
-                    if(s.x < 0) { s.x = this.width; s.y = Math.random() * this.height; }
+                    s.x -= (m * 2) + 0.5;
+                    if(s.x < 0) s.x = this.w;
                 });
-            }
 
-            drawCurve(m) {
-                // We want the plane to rise to the middle-right area and stay there while background moves
-                // But visually it looks better if it "takes off" from bottom left first.
-                
-                const w = this.width;
-                const h = this.height;
-                
-                // Normalise launch: 0 to 1 over first 4 seconds (approx 5x)
-                const phase = Math.min((m - 1) / 3, 1); 
-
-                // Coordinates
-                const startX = 0;
-                const startY = h;
-                
-                // Target spot (20% from right, 20% from top)
-                const targetX = w * 0.8;
-                const targetY = h * 0.2;
-
-                const curX = startX + (targetX - startX) * phase;
-                const curY = startY + (targetY - startY) * phase;
-
-                // Bezier Control Point
-                const cpX = curX * 0.6;
-                const cpY = h;
-
-                // Gradient Fill
-                const grad = this.ctx.createLinearGradient(0, 0, 0, h);
-                grad.addColorStop(0, 'rgba(233, 30, 99, 0.4)');
-                grad.addColorStop(1, 'rgba(233, 30, 99, 0)');
-
+                // Draw Grid
+                this.ctx.strokeStyle = '#222';
+                this.ctx.lineWidth = 1;
                 this.ctx.beginPath();
-                this.ctx.moveTo(0, h);
-                this.ctx.quadraticCurveTo(cpX, h, curX, curY);
-                this.ctx.lineTo(curX, h);
-                this.ctx.lineTo(0, h);
+                for(let i=0; i<this.w; i+=80) { this.ctx.moveTo(i,0); this.ctx.lineTo(i,this.h); }
+                for(let i=0; i<this.h; i+=80) { this.ctx.moveTo(0,i); this.ctx.lineTo(this.w,i); }
+                this.ctx.stroke();
+
+                if(this.gameState === 'LOADING') return;
+
+                // Curve Calculation
+                const norm = Math.min((m - 1) / 4, 1); // 0 to 1 scaling
+                
+                const startX = 0;
+                const startY = this.h;
+                const endX = this.w * 0.1 + (this.w * 0.7 * norm);
+                const endY = this.h * 0.9 - (this.h * 0.7 * norm);
+
+                const cpX = endX * 0.5;
+                const cpY = this.h;
+
+                // Fill Area
+                const grad = this.ctx.createLinearGradient(0,0,0,this.h);
+                grad.addColorStop(0, 'rgba(233,30,99,0.5)');
+                grad.addColorStop(1, 'rgba(233,30,99,0)');
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+                this.ctx.lineTo(endX, this.h);
+                this.ctx.lineTo(startX, this.h);
                 this.ctx.fillStyle = grad;
                 this.ctx.fill();
 
-                // Stroke
+                // Stroke Line
                 this.ctx.beginPath();
-                this.ctx.moveTo(0, h);
-                this.ctx.quadraticCurveTo(cpX, h, curX, curY);
-                this.ctx.lineWidth = 5;
+                this.ctx.moveTo(startX, startY);
+                this.ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+                this.ctx.lineWidth = 4;
                 this.ctx.strokeStyle = '#E91E63';
-                this.ctx.lineCap = 'round';
                 this.ctx.stroke();
 
-                // Plane
-                const size = 50;
+                // Draw Plane
                 this.ctx.save();
-                this.ctx.translate(curX, curY);
-                // Rotate slightly based on ascent
-                const angle = phase < 1 ? -15 * Math.PI / 180 : 0;
-                this.ctx.rotate(angle);
-                this.ctx.drawImage(this.planeImg, -size, -size/1.5, size*1.5, size*1.5);
+                this.ctx.translate(endX, endY);
+                this.ctx.rotate(-15 * Math.PI / 180);
+                this.ctx.drawImage(this.plane, -25, -25, 50, 50);
                 this.ctx.restore();
             }
         }
 
-        // Init
-        const game = new AviatorGame();
-        
-        // Sound Toggle Handler
-        const soundBtn = document.getElementById('soundBtn');
-        soundBtn.addEventListener('click', () => {
-            const isActive = audio.toggle();
-            soundBtn.textContent = isActive ? '🔊' : '🔇';
-            soundBtn.classList.toggle('active', isActive);
-        });
+        // Init Game
+        const game = new Aviator();
+
+        // Sound Toggle Button
+        const btnSound = document.getElementById('btnSound');
+        btnSound.onclick = () => {
+            const on = AudioEngine.toggle();
+            btnSound.innerHTML = on ? '🔊' : '🔇';
+            btnSound.classList.toggle('active', on);
+        };
 
     </script>
 </body>
